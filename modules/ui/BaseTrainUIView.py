@@ -166,24 +166,34 @@ class BaseTrainUIView(ABC):
         self.components.path_entry(frame, 4, 3, ui_state, "debug_dir", mode="dir", io_type=PathIOType.OUTPUT)
 
         # tensorboard
-        self.components.label(frame, 6, 0, "Tensorboard",
+        self.components.label(frame, 5, 0, "Tensorboard",
                          tooltip="Starts the Tensorboard Web UI during training")
-        self.components.switch(frame, 6, 1, ui_state, "tensorboard")
+        self.components.switch(frame, 5, 1, ui_state, "tensorboard")
 
-        self.components.label(frame, 6, 2, "Always-On Tensorboard",
+        self.components.label(frame, 5, 2, "Always-On Tensorboard",
                          tooltip="Keep Tensorboard accessible even when not training. Useful for monitoring completed training sessions.")
-        self.components.switch(frame, 6, 3, ui_state, "tensorboard_always_on", command=controller._on_always_on_tensorboard_toggle)
+        self.components.switch(frame, 5, 3, ui_state, "tensorboard_always_on", command=controller._on_always_on_tensorboard_toggle)
 
-        self.components.label(frame, 7, 0, "Expose Tensorboard",
+        self.components.label(frame, 6, 0, "Expose Tensorboard",
                          tooltip="Exposes Tensorboard Web UI to all network interfaces (makes it accessible from the network)")
-        self.components.switch(frame, 7, 1, ui_state, "tensorboard_expose")
-        self.components.label(frame, 7, 2, "Tensorboard Port",
+        self.components.switch(frame, 6, 1, ui_state, "tensorboard_expose")
+        self.components.label(frame, 6, 2, "Tensorboard Port",
                          tooltip="Port to use for Tensorboard link")
-        self.components.entry(frame, 7, 3, ui_state, "tensorboard_port")
+        self.components.entry(frame, 6, 3, ui_state, "tensorboard_port")
+
+        # trackio
+        self.components.label(
+            frame, 7, 0, "Trackio", tooltip="Use Trackio to log training metrics."
+        )
+        self.components.switch(frame, 7, 1, ui_state, "trackio")
+
+        self.components.label(frame, 7, 2, "Trackio Project",
+                         tooltip="Trackio project name. Defaults to \"OneTrainer\" if left empty.")
+        self.components.entry(frame, 7, 3, ui_state, "trackio_project")
 
         # validation
         self.components.label(frame, 8, 0, "Validation",
-                         tooltip="Enable validation steps and add new graph in tensorboard")
+                         tooltip="Enable validation steps and add new graph in tensorboard/Trackio")
         self.components.switch(frame, 8, 1, ui_state, "validation")
 
         self.components.label(frame, 8, 2, "Validate after",
@@ -274,8 +284,8 @@ class BaseTrainUIView(ABC):
                          tooltip="Whether to include non-ema sampling when using ema.")
         self.components.switch(sub_frame, 0, 1, ui_state, "non_ema_sampling")
 
-        self.components.label(sub_frame, 0, 2, "Samples to Tensorboard",
-                         tooltip="Whether to include sample images in the Tensorboard output.")
+        self.components.label(sub_frame, 0, 2, "Samples to Tensorboard/Trackio",
+                         tooltip="Whether to include sample images in the Tensorboard and Trackio output.")
         self.components.switch(sub_frame, 0, 3, ui_state, "samples_to_tensorboard")
 
     def build_backup_tab_content(self, frame, controller, ui_state):
